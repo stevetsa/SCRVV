@@ -2,48 +2,55 @@
 library(shiny)
 
 # Load data
-data <- read_csv("m1.csv")
+data <- readRDS("m1_sub.Rds")
 
 # Define UI
 ui <- fluidPage(
   
-  # App title ----
-  titlePanel("Data Column Information"),
-  
-  # Sidebar layout with a input and output definitions ----
-  sidebarLayout(
-    
-    # Sidebar panel for inputs ----
-    sidebarPanel(
-      
-      # Input: Selector for choosing column ----
-      radioButtons(inputId = "column",
-        label = "Choose a column:",
-        choices = colnames(data))
-    ),
-    
-    # Main panel for displaying outputs ----
-    mainPanel(
-      
-      # Output: Verbatim text for data summary ----
-      verbatimTextOutput("summary")
-      
-    )
+  # App title
+  titlePanel("SCRVV"),
+  mainPanel(
+    tabsetPanel(type = "tabs", id="tabs",
+                tabPanel("All Columns", value=1,
+                         verbatimTextOutput("all_columns")),
+                tabPanel("Summary", value=2,
+                  sidebarPanel(uiOutput("sidebar_summary")),
+                  verbatimTextOutput("summary")),
+                tabPanel("Unique", value=3,
+                  sidebarPanel(uiOutput("sidebar_unique")),
+                  verbatimTextOutput("unique")))
   )
 )
 
 # Define server logic
 server <- function(input, output) {
-  
-  # Return the requested column ----
-  columnInput <- reactive({input$column})
-  
-  # Generate a summary of the column ----
-  output$summary <- renderPrint({
-    column <- columnInput()
-    summary(data[column])
+  output$all_columns <- renderPrint({
+    if (input$tabs == 1){
+      for (i in 1:11) {
+        cat(colnames(data)[i], "\n")
+      }
+    }
   })
-  
+  output$sidebar_summary <- renderUI({
+    if (input$tabs == 2){
+      radioButtons(inputId = "column",
+                   label = "Choose a column:",
+                   choices = colnames(data)[1:9])
+    }
+  })
+  output$summary <- renderPrint({
+    summary(data[input$column])
+  })
+  output$sidebar_unique <- renderUI({
+    if(input$tabs == 3){
+      radioButtons(inputId = "column2",
+                   label = "Choose a column:",
+                   choices = colnames(data))
+    }
+  })
+  output$unique <- renderPrint({
+    unique(data[input$column2])
+  })
 }
 
 # Create Shiny object
