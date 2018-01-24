@@ -48,12 +48,12 @@ ui <- fluidPage(
   ),
   tags$head(tags$style(type="text/css", "
              #loadmessage {
-               top: 0px;
+               position:relative;
+               top: 100px;
                left: 0px;
                width: 100%;
                padding: 5px 0px 5px 0px;
                text-align: center;
-               font-weight: bold;
                font-size: 100%;
                color: #000000;
                background-color: #CCFF66;
