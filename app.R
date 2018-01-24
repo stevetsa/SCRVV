@@ -1,5 +1,6 @@
 # Load packages
 library(shiny)
+library(DT)
 
 # Load data
 data <- readRDS("m1_sub.Rds")
@@ -18,7 +19,11 @@ ui <- fluidPage(
                   verbatimTextOutput("summary")),
                 tabPanel("Unique", value=3,
                   sidebarPanel(uiOutput("sidebar_unique")),
-                  verbatimTextOutput("unique")))
+                  verbatimTextOutput("unique")),
+                tabPanel("Raw", value=4,
+                  verbatimTextOutput("Raw"),
+                  DT::dataTableOutput('ex1')
+                ))
   )
 )
 
@@ -50,6 +55,11 @@ server <- function(input, output) {
   })
   output$unique <- renderPrint({
     unique(data[input$column2])
+  })
+  output$Raw <- renderPrint({
+    if(input$tabs == 4){
+      output$ex1 <- DT::renderDataTable(DT::datatable(data, options = list(pageLength = 10)))
+    }
   })
 }
 
