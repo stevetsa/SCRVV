@@ -5,6 +5,7 @@ library(DT)
 # Load data
 data <- readRDS("m1_sub.Rds")
 
+
 # Define UI
 ui <- fluidPage(
   # App title
@@ -90,7 +91,7 @@ server <- function(input, output) {
       data$Heterozygous.SNP = unlist(data$Heterozygous.SNP)
       data$Homozygous.SNP = unlist(data$Homozygous.SNP)
 
-      output$ex1 <- DT::renderDataTable(DT::datatable(data, escape = FALSE, options = list(pageLength = 10)))
+      output$ex1 <- DT::renderDataTable(DT::datatable(data, filter = 'top',escape = FALSE, options = list(pageLength = 10, scrollX='400px',autoWidth = TRUE)))
     }
   })
 }
