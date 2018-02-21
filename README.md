@@ -27,7 +27,15 @@ Interactively exploring how these variables are correlated to SNPs can aid in th
 1. Download this Repository: `git clone --recursive https://github.com/NCBI-Hackathons/ViRGo`
 2. Collect output files generated beforehand: `python3 collect_output.py`
 3. Follow the steps in [MergeTwoFiles.R](MergeTwoFiles.R) to generate the file [/data/merged.Rds](/data/merged.Rds)
-4. Run the Shiny application [ViRGo_app.R](ViRGo_app.R) to interact with the merged data.
+4. Install dependencies in R (from R prompt).
+```{r}
+#ggplot was not available for my version of R, ggplot2 used instead
+install.packages(c("plotly", "shiny", "tidyr", "ggplot2", "dplyr", "DT"), repos = "https://cloud.r-project.org")
+```
+5. Run the Shiny application [ViRGo_app.R](ViRGo_app.R) to interact with the merged data.
+```{r}
+runApp("ViRGo/ViRGo_app.R")
+```
 
 ![Flowchart](https://github.com/NCBI-Hackathons/ViRGo/blob/master/flowcharts/flowChart.png)
 
